@@ -1,10 +1,13 @@
 # Qtheme
+[GitHub repository](https://github.com/Walikuperek/Qtheme)
+
 Simple, fast and production ready library for managing themes in your app.
 
 Uses CSS root variables under the hood.
 *Can create global CSS classes from theme atoms.*
 
 > Based on **document.style.setProperty**, so can be used in any framework and vanilla JS as well.
+
 
 ## Install
 ```
@@ -31,27 +34,36 @@ npm install @quak.lib/qtheme
 * Get common atoms
 * Generate CSS classes from atoms and attach them to document head
 
-## API
+## Getting started
 ```typescript
-import {Qtheme, Theme, ThemeAtom, SetRootAtomsOptions} from '@quak.lib/qtheme'
+// Basic usage
+import {Qtheme, Theme, ThemeAtom} from '@quak.lib/qtheme'
 
-DEFAULT_OPTIONS: SetRootAtomsOptions = {
-    generateCSS: true,
-    token: 'Qtheme',
-    commonToken: 'Qtheme-common'
-} // pass partial options to override default options
+Qtheme.setTheme(theme) // Theme { name, atoms }, you can extend Theme interface
+const theme: Theme = Qtheme.getTheme()
 
-Qtheme.setTheme(theme, opts?) // Theme { name, atoms }, you can extend Theme interface
-const theme = Qtheme.getTheme(token?)
-
-Qtheme.setCommonAtoms(atoms, opts?) // [ ['b-radius-oval', '50vw 50vw'], ['text-size', '16px'] ]
-const commonThemeAtoms = Qtheme.getCommonAtoms(token?)
+Qtheme.setCommonAtoms(atoms) // [ ['b-radius-oval', '50vw 50vw'], ['text-size', '16px'] ]
+const commonThemeAtoms: ThemeAtom[] = Qtheme.getCommonAtoms()
 ```
 
 ## Themes
-```typescript
-type ThemeAtom = [string, string];
+Create multiple themes and switch between them with **`Qtheme.setTheme(theme)`**
 
+> Remember to use same atoms names in different themes to override values.
+```typescript
+type ThemeAtom = [string, string]; // [atomName, atomValue]
+
+// Atom names will be converted to CSS variables names, like
+['bgColor', '#fff'] -> `--bg-color: #fff`
+['bg-color', '#fff'] -> `--bg-color: #fff`
+```
+
+> **AtomValue** can be any CSS value like: #fff, rgba(0,0,0,0.5), 16px, 50vw, etc.
+
+And if you want to use CSS variables then you can use them like: `var(--atom-name)`
+
+
+```typescript
 interface Theme {
   name: string;
   atoms: ThemeAtom[];
@@ -61,7 +73,10 @@ const lightTheme: Theme = {
   name: 'light',
   atoms: [
       ['bgColor', 'background:#fff'], // will be converted to --bg-color
+      // will provide CSS for &rarr; class="bg-color" with background:#fff
       ['textColor', 'color:#000'], // will be converted to --text-color
+      // will provide CSS for &rarr; class="text-color" with color:#000
+      
       ['primary', 'dodgerblue']
       // if you don't provide 'color:' in value or something else then
       // Qtheme won't generate CSS class for this atom
@@ -70,7 +85,15 @@ const lightTheme: Theme = {
       // like in your CSS code .primary { color: var(--primary) }
   ]
 };
+```
+> If you want to use auto-generated CSS classes then you need to provide `color:` or `background:` or what you need. Just follow regular CSS syntax.
+>
+> 
+> `['bg-color', 'background:#fff']` &rarr; `--bg-color: #fff` +
+> 
+> Will create global CSS class `.bg-color: {background:var(--bg-color)}`
 
+```typescript
 const darkTheme: Theme = {
   name: 'dark',
   atoms: [
@@ -82,7 +105,6 @@ const darkTheme: Theme = {
 ```
 
 ## Javascript usage example
-Import Qtheme with `import/export` syntax or import it with `script` tag
 ```javascript
 import {Qtheme} from '@quak.lib/qtheme';
 
@@ -94,15 +116,6 @@ const lightTheme = {
       ['textColor', 'color:#000'], // will be converted to --text-color
       ['primary', 'dodgerblue'] // will be converted to --primary
   ]
-};
-
-const darkTheme = {
-  name: 'dark',
-  atoms: [
-      ['bg-color', 'background:#000'], // will be converted to --bg-color
-      ['text-color', 'color:#fff'], // will be converted to --text-color
-      ['primary', 'dodgerblue'] // will be converted to --primary
-  ] 
 };
 
 // Set theme whenever you want
@@ -123,7 +136,11 @@ import {Qtheme, Theme} from '@quak.lib/qtheme';
 
 const lightTheme: Theme = {
   name: 'light',
-  atoms: [['bgColor', '#fff']] // will be converted to --bg-color
+  atoms: [
+      ['bg-color', 'background:#fff'], // will be converted to --bg-color
+      ['text-color', 'color:#000'], // will be converted to --text-color
+      ['primary', 'dodgerblue'] // will be converted to --primary
+  ]
 };
 
 Qtheme.setTheme(lightTheme); // set light theme
@@ -142,20 +159,25 @@ Then in html
 In */pages/index.tsx*
 
 ```tsx
+import {useEffect} from 'react';
+import {Qtheme} from '@quak.lib/qtheme';
+import {lightTheme, darkTheme} from '../themes'; // import your themes
+
 export function Index() {
   // Simply   
   useEffect(() => {
-    Qtheme.setTheme(darkTheme);
+    Qtheme.setTheme(lightTheme);
   });
 
   setTimeout(() => { // use setTimeout if you want
     if (typeof window !== 'undefined') {
-      Qtheme.setTheme(darkTheme);
+      Qtheme.setTheme(lightTheme);
     }
   });
 
   return (
     <div className='bg-color'>
+      <button onClick={() => Qtheme.setTheme(darkTheme)}>Set dark theme</button>
       <p class="text-color">Hello React world!</p>
     </div>
   );
@@ -165,16 +187,25 @@ export function Index() {
 ## Angular usage
 In *app.component.ts*
 ```typescript
+import {Qtheme} from '@quak.lib/qtheme';
+import {lightTheme, darkTheme} from '../themes'; // import your themes
+
+// regular angular imports and @Component...
 class AppComponent implements OnInit {
   constructor() {
     Qtheme.setTheme(darkTheme);
+  }
+  
+  setLightTheme(): void {
+    Qtheme.setTheme(lightTheme);
   }
 }
 ```
 Then in *app.component.html*
 ```html
 <div class="bg-color">
-  <p class="text-color">Hello TS world!</p>
+  <button (click)="setLightTheme()">Set light theme</button>
+  <p class="text-color">Hello Angular world!</p>
 </div>
 ```
 
@@ -186,7 +217,7 @@ import {Qtheme, Theme, ThemeAtom} from '@quak.lib/qtheme';
 // With JS simply just remove types
 const commonAtoms: ThemeAtom[] = [
   ['font-family', 'sans-serif'],
-  ['font-size', '16px']
+  ['font-size', 'font-size:16px'] // will provide CSS for &rarr; class="font-size" with font-size:16px
 ];
 
 Qtheme.setCommonAtoms(commonAtoms);
