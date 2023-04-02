@@ -13,7 +13,8 @@
     "prettier:check": "prettier --check \"src/**/*.ts\"",
     "lint": "eslint \"src/**/*.ts\"",
     "test": "jest --config jestconfig.json",
-    "prepublishOnly" : "npm test && npm run lint"
+    "prepublishOnly" : "npm test && npm run lint",
+    "publish": "npm run build && npm publish --access public"
   },
   "keywords": [
     "theme",
