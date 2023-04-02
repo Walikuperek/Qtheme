@@ -4,9 +4,11 @@
 
 ~8kb.js, simple, fast and production-ready library for managing themes in your app. Create multiple themes and switch between them with **`Qtheme.setTheme(theme)`**
 
-Tested in **Angular**, **React** and **vanilla JS**. Should work with any framework.
+Tested in **Angular**, **React**. Should work with any framework.
 
-> Based on *document.style.setProperty*
+> Based on *document.documentElement.style.setProperty* so will work with **vanilla JS** if supports import/export
+> 
+> Try [vitejs.dev](https://vitejs.dev/) to use powerful import/export in vanilla JS
 
 ## Install
 ```
@@ -18,7 +20,6 @@ npm install @quak.lib/qtheme
 * [Getting started](#getting-started)
 * [Features](#features)
 * [Declaring Themes](#declaring-themes)
-* [Javascript usage example](#javascript-usage-example)
 * [Typescript usage example](#typescript-usage-example)
 * [Angular usage example](#angular-usage)
 * [React usage](#react-usage)
@@ -86,30 +87,6 @@ const darkTheme: Theme = {
 > **AtomValue** can be any CSS value like: #fff, rgba(0,0,0,0.5), 16px, 50vw, etc.
 
 And if you want to use CSS variables then you can use them like: `var(--atom-name)`
-
-## Javascript usage example
-```javascript
-import {Qtheme} from '@quak.lib/qtheme';
-
-// Declare your themes
-const lightTheme = {
-  name: 'light',
-  atoms: [
-      ['bg-color', 'background:#fff'], // will gen. CSS class .bg-color { background: var(--bg-color) }
-      ['text-color', 'color:#000'], // will gen. CSS class .text-color { color: var(--text-color) }
-      ['primary', 'dodgerblue']
-  ]
-};
-
-// Set theme whenever you want
-Qtheme.setTheme(lightTheme); // will set light theme
-```
-Then in html
-```html
-<div class="bg-color">
-  <p class="text-color">Hello world!</p>
-</div>
-```
 
 ## Typescript usage example
 ```typescript
@@ -195,7 +172,6 @@ If you want to set common atoms for all themes, you can use `setCommonAtoms` met
 ```typescript
 import {Qtheme, Theme, ThemeAtom} from '@quak.lib/qtheme';
 
-// With JS simply just remove types
 const commonAtoms: ThemeAtom[] = [
   ['font-family', 'sans-serif'],
   ['font-size', 'font-size:16px'] // will provide CSS for -> class="font-size" with font-size:16px
