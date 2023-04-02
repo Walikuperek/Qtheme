@@ -4,12 +4,9 @@
 
 Simple, fast and production-ready library for managing themes in your app. Create multiple themes and switch between them with **`Qtheme.setTheme(theme)`**
 
-Uses CSS root variables under the hood.
-*Can create global CSS classes from theme atoms.*
+Tested in **Angular**, **React** and **vanilla JS**. Should work with any framework.
 
 > Based on *document.style.setProperty*
-> 
-> Use it with **React/Angular or probably any framework** + **vanilla JS/HTML/CSS** as well.
 
 ## Install
 ```
