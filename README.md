@@ -7,7 +7,9 @@ Uses CSS root variables under the hood.
 > Based on **document.style.setProperty**, so can be used in any framework and vanilla JS as well.
 
 ## Install
-```npm install @quak.lib/qtheme```
+```
+npm install @quak.lib/qtheme
+```
 
 ## Table of Contents
 
