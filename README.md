@@ -19,9 +19,10 @@ npm install @quak.lib/qtheme
 
 * [Getting started](#getting-started)
 * [Features](#features)
-* [Declaring Themes](#declaring-themes)
+* [API](#api)
+* [Themes](#themes)
 * [Typescript usage example](#typescript-usage-example)
-* [Angular usage example](#angular-usage)
+* [Angular usage](#angular-usage)
 * [React usage](#react-usage)
     - [Example with Next.js](#example-with-nextjs)
 * [Set common atoms](#set-common-atoms)
@@ -30,29 +31,130 @@ npm install @quak.lib/qtheme
 * [License](#license)
 
 ## Getting started
+**Qtheme** main goal is to provide easy way to manage themes in your app (JS/TS/any framework). It's not a CSS framework, it's just a library that will help you to manage themes.
+
+But... Qtheme can generate CSS for you(for theme atoms), so you don't have to write it by yourself. It's optional, you can use it or not.
+
+To sum up, Qtheme lets you:
+* Create infinite number of themes
+* Switch between them easily
+* Set common theme atoms for all themes
+* Initialize already chosen theme on app start
+* Generate CSS classes for you, so you don't have to write it by yourself
+
+### How does it work?
+
 ```typescript
-// Basic usage
 import {Qtheme, Theme} from '@quak.lib/qtheme'
-import {lightTheme, darkTheme} from './themes' // your themes
 
-// Initialize theme or change it, same method for both
-Qtheme.setTheme(lightTheme) // Theme { name, atoms }, you can extend Theme interface
+const darkTheme: Theme = {
+  name: 'dark',
+  atoms: [
+      // [AtomName, AtomValue]
+      ['bg-color', 'background:#000'], // will gen. CSS class .bg-color { background: var(--bg-color) }
+      ['text-color', 'color:#fff'], // will gen. CSS class .text-color { color: var(--text-color) }
+      ['primary', 'dodgerblue']
+  ] 
+};
+const purpleDarkTheme: Theme = {
+  name: 'dark',
+  atoms: [
+      ['bg-color', 'background:#000'],
+      ['text-color', 'color:#fff'],
+      ['primary', 'purple']
+  ] 
+};
 
-// If you need to get theme to compare or save, etc.
-const currentTheme: Theme | null = Qtheme.getTheme()
+// Initialize theme
+Qtheme.setTheme(darkTheme)
+
+// Initialize already chosen theme
+const savedTheme: Theme | null = Qtheme.getTheme()
+if (savedTheme) {
+  Qtheme.setTheme(savedTheme)
+} 
+
+// Switch theme
+Qtheme.setTheme(purpleDarkTheme)
+```
+Since we did not provide any `background-color:`, `color:` or anything else to `'primary'` value, we need to add in CSS
+```css
+.primary-color {
+  color: var(--primary);
+}
+
+/* Or some for primary background */
+.bg-primary {
+  background-color: var(--primary);
+}
+```
+Then in html
+```html
+<div class="bg-color">
+  <p class="text-color">Hello TS world!</p>
+  <button class="bg-primary text-color">Click me!</button>
+</div>
 ```
 
 ## Features
-* Set theme - light, dark, purpleDark, highContrast, etc.
-* Get theme - in case you want to store it in localStorage or something else
-* Set common atoms - atoms that will be applied to all themes
-* Get common atoms - same like getTheme
-* Generate CSS classes from atoms and attach them to document head
+```typescript
+// Set theme - light, dark, purpleDark, highContrast, etc.
+Qtheme.setTheme(theme: Theme, options?: SetThemeOptions): void
+```
+
+```typescript
+// To init already chosen theme: first get, then set
+Qtheme.getTheme(): Theme | null
+```
+
+```typescript
+// Set common atoms - atoms that will be applied to all themes
+Qtheme.setCommonAtoms(atoms: ThemeAtom[], options?: SetCommonAtomsOptions): void
+```
+
+```typescript
+// For init already chosen ones, etc.
+Qtheme.getCommonAtoms(): ThemeAtom[]
+```
+
+```typescript
+// To disable CSS generation
+Qtheme.setTheme(yourTheme, { generateCSS: false })
+```
+
+
+### Tips
+```typescript
+// To change theme default('Qtheme') localStorage key
+Qtheme.setTheme(yourTheme, { token: 'YourNewLocalStorageThemeKey' })
+
+const currentTheme = JSON.parse(localStorage.getItem('YourNewLocalStorageThemeKey'))
+const equivalent = Qtheme.getTheme('YourNewLocalStorageThemeKey')
+```
+```typescript
+// To change common atoms default('Qtheme-common') localStorage key
+Qtheme.setCommonAtoms(yourTheme, { commonToken: 'YourNewLocalStorageCommonAtomsKeys' })
+
+const currentCommonThemeAtoms = JSON.parse(localStorage.getItem('YourNewLocalStorageCommonAtomsKeys'))
+const equivalent = Qtheme.getCommonAtoms('YourNewLocalStorageCommonAtomsKeys')
+```
+```css
+/* You can add CSS :root with default values, actually it's optional */
+/* You can still use :root, no worries, just keep unique names */
+:root {
+    --bg-color: #fff;
+    --text-color: #000;
+    --primary: dodgerblue;
+}
+```
 
 ## Declaring Themes
 > **Remeber to override atoms in different themes!**
 
 ```typescript
+import {Qtheme, Theme, ThemeAtom} from '@quak.lib/qtheme'
+
+// Import and and follow this interface
 interface Theme {
   name: string;
   atoms: ThemeAtom[];
@@ -178,6 +280,8 @@ const commonAtoms: ThemeAtom[] = [
 ];
 
 Qtheme.setCommonAtoms(commonAtoms);
+
+// Get common atoms, you can save it to DB, etc.
 const atoms = Qtheme.getCommonAtoms();
 ```
 
@@ -207,12 +311,12 @@ If you want to use auto-generated CSS classes then you need to provide `color:` 
 
 #### Examples
 
-| **ThemeAtom**                               | **:root variable**                  | **generated CSS**                           |
-|---------------------------------------------|-------------------------------------|---------------------------------------------|
-| 'primary-color', 'color:hsl(53, 100%, 50%)' | --primary-color: hsl(53, 100%, 50%) | .primary-color {color:var(--primary-color)} |
-| 'bg-color', 'background:#fff'               | --bg-color: #fff                    | .bg-color {background:var(--bg-color)}      |
-| 'text-color', '#fff'                        | --text-color: #fff                  | <won't generate CSS>                        |
-| ...                                         | ...                                 | ...                                         |
+| **ThemeAtom**                               | **:root variable**                  | **generated CSS**                            |
+|---------------------------------------------|-------------------------------------|----------------------------------------------|
+| 'primary-color', 'color:hsl(53, 100%, 50%)' | --primary-color: hsl(53, 100%, 50%) | .primary-color {color:var(--primary-color)}  |
+| 'bg-color', 'background-color:#fff'         | --bg-color: #fff                    | .bg-color {background-color:var(--bg-color)} |
+| 'text-color', '#fff'                        | --text-color: #fff                  | <won't generate CSS>                         |
+| ...                                         | ...                                 | ...                                          |
 
 ## License
 MIT
