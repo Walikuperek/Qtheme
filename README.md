@@ -312,16 +312,10 @@ import {Qtheme} from '@quak.lib/qtheme';
 import {lightTheme, darkTheme} from '../themes'; // import your themes
 
 export function Index() {
-  // Simply   
+  // Set light theme on init   
   useEffect(() => {
     Qtheme.setTheme(lightTheme);
-  });
-
-  setTimeout(() => { // use setTimeout if you want
-    if (typeof window !== 'undefined') {
-      Qtheme.setTheme(lightTheme);
-    }
-  });
+  }, []);
 
   return (
     <div className="bg-color">
