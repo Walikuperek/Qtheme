@@ -1,5 +1,5 @@
 # Qtheme
-![QthemeLogo](readme_assets/qtheme_Background_Removed.png)
+![QthemeLogo](https://quak.com.pl/assets/logo/qtheme_Background_Removed.png)
 ![LicenseBadge](https://img.shields.io/github/license/walikuperek/qtheme)
 ![TestsBadge](https://img.shields.io/badge/Tests-7%2F7%20%E2%9C%85-success)
 
