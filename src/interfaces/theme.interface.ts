@@ -6,7 +6,9 @@
  * ['bg-dark', '#333'] // will create CSS variable --bg-dark: #333;
  * ```
  * */
-export type ThemeAtom = [string, string];
+export type AtomName = string;
+export type AtomValue = string;
+export type ThemeAtom = [AtomName, AtomValue];
 
 /**
  * @description Theme interface, base on it your theme or extend this interface with your own properties.

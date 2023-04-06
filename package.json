@@ -1,7 +1,7 @@
 {
   "name": "@quak.lib/qtheme",
-  "version": "1.1.10",
-  "description": "Simple, fast and production ready library for managing themes in your app.",
+  "version": "1.2.0",
+  "description": "Manage themes in your Angular/React/JS/TS app. Fast and production-ready.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
@@ -17,6 +17,19 @@
     "publish": "npm run build && npm publish --access public"
   },
   "keywords": [
+    "react theme",
+    "angular theme",
+    "js theme",
+    "ts theme",
+    "react",
+    "angular",
+    "js",
+    "ts",
+    "javascript",
+    "typescript",
+    "css-in-js",
+    "cssinjs",
+    "theming",
     "theme",
     "themes",
     "theme changer",

@@ -1,12 +1,16 @@
 # Qtheme
+![QthemeLogo](readme_assets/qtheme_Background_Removed.png)
+![LicenseBadge](https://img.shields.io/github/license/walikuperek/qtheme)
+![TestsBadge](https://img.shields.io/badge/Tests-7%2F7%20%E2%9C%85-success)
+
 * [GitHub repository](https://github.com/Walikuperek/Qtheme)
 * [NPM package](https://www.npmjs.com/package/@quak.lib/qtheme)
 
-~8kb.js, simple, fast and production-ready library for managing themes in your app. Create multiple themes and switch between them with **`Qtheme.setTheme(theme)`**
+~8kb.js unminified, simple, fast and production-ready *css-in-js* library for managing themes in your app. Create multiple themes and switch between them with **`Qtheme.setTheme(theme)`**
 
-Tested in **Angular**, **React**. Should work with any framework.
+Tested in **Angular**, **React**. Should work with any framework. Below examples.
 
-> Based on *document.documentElement.style.setProperty* so will work with **vanilla JS** if supports import/export
+> Will work with **vanilla JS** if supports import/export
 > 
 > Try [vitejs.dev](https://vitejs.dev/) to use powerful import/export in vanilla JS
 
@@ -25,10 +29,12 @@ npm install @quak.lib/qtheme
   - [interface SetRootAtomsOptions](#interface-setrootatomsoptions)
   - [interface Qtheme](#interface-qtheme)
 * [Tips](#tips)
-  - [Disabling Generating CSS classes](#disabling-generating-css-classes)
-  - [Changing localStorage keys](#changing-localstorage-keys)
+  - [Disable generating CSS classes](#disabling-generating-css-classes)
+  - [Change localStorage keys](#changing-localstorage-keys)
   - [:root variables](#root-variables)
   - [Set common atoms](#set-common-atoms)
+  - [Init already chosen theme](#init-already-chosen-theme)
+  - [Init already chosen common theme atoms](#init-already-chosen-common-theme-atoms)
 * [Typescript usage example](#typescript-usage-example)
 * [Angular usage](#angular-usage)
 * [React usage](#react-usage)
@@ -55,18 +61,24 @@ import {Qtheme, Theme} from '@quak.lib/qtheme'
 const darkTheme: Theme = {
   name: 'dark',
   atoms: [
-      // [AtomName, AtomValue]
-      ['bg-color', 'background:#000'], // will gen. CSS class .bg-color { background: var(--bg-color) }
-      ['text-color', 'color:#fff'], // will gen. CSS class .text-color { color: var(--text-color) }
-      ['primary', 'dodgerblue']
+      // [AtomName, AtomValue(css-property:value / value)]
+      ['bg-color', 'background-color:#000'], // will genenerate CSS class .bg-color { background-color: var(--bg-color) }
+      ['text-color', 'color:#fff'], // will genenerate CSS class .text-color { color: var(--text-color) }
+      ['primary', 'dodgerblue'],
+      ['accent', 'pink'],
+      ['bg-accent', 'background-color:var(--accent)'],
+      ['text-accent', 'color:var(--accent)']
   ] 
 };
 const purpleDarkTheme: Theme = {
   name: 'dark',
   atoms: [
-      ['bg-color', 'background:#000'],
+      ['bg-color', 'background-color:#000'],
       ['text-color', 'color:#fff'],
-      ['primary', 'purple']
+      ['primary', 'purple'],
+      ['accent', 'orange'],
+      ['bg-accent', 'background-color:var(--accent)'],
+      ['text-accent', 'color:var(--accent)']
   ] 
 };
 
@@ -84,7 +96,8 @@ Qtheme.setTheme(purpleDarkTheme)
 ```
 Since we did not provide any `background-color:`, `color:` or anything else to `'primary'` value, we need to add in CSS
 ```css
-.primary-color {
+/* We need to create CSS for primary, for accent we can use 'text-accent' | 'bg-accent' */
+.text-primary {
   color: var(--primary);
 }
 
@@ -224,14 +237,43 @@ const currentCommonThemeAtoms = JSON.parse(localStorage.getItem('YourNewLocalSto
 const equivalent = Qtheme.getCommonAtoms('YourNewLocalStorageCommonAtomsKeys')
 ```
 
+### Init already chosen theme
+Users can choose theme and Qtheme saves it to localStorage for you to init it on page load.
+```typescript
+// Get theme from localStorage
+const theme: Theme | null = Qtheme.getTheme()
+if (theme) {
+  Qtheme.setTheme(theme)
+}
+```
+
+### Init already chosen common theme atoms
+Qtheme saves common atoms to localStorage to let you init them on page load.
+```typescript
+// Get common atoms from localStorage
+const atoms: ThemeAtom[] | null = Qtheme.getCommonAtoms()
+if (atoms) {
+  Qtheme.setCommonAtoms(atoms)
+}
+```
+
 ### :root variables
-You can add CSS :root with default values, actually it's optional, but it's good to have it.
+> You can still use :root, no worries, just keep unique names as always.
+
+You can add CSS :root with default values, actually it's optional, but it's good to have it -> it will be overwritten by theme atoms.
+
 ```css
-/* You can still use :root, no worries, just keep unique names */
 :root {
+    /* Default values for theme */
     --bg-color: #fff;
     --text-color: #000;
     --primary: dodgerblue;
+  
+    /* Common atoms */
+    /* If you provide them here, you probably won't need 'setCommonAtoms' method */
+    /* But you still need to write CSS for them, so setCommonAtoms is better */
+    --font-family: sans-serif;
+    --font-size: 16px;
 }
 ```
 
@@ -250,6 +292,9 @@ Qtheme.setCommonAtoms(commonAtoms);
 
 // Get common atoms, you can save it to DB, etc.
 const atoms = Qtheme.getCommonAtoms();
+if (atoms) {
+  Qtheme.setCommonAtoms(atoms);
+}
 ```
 
 ## Typescript usage example
@@ -301,7 +346,7 @@ Then in *app.component.html*
 ```
 
 ## React usage
-Take a look how it's done with Next.js, it's the same with Gatsby, etc.
+React is the same within it's ecosystem, take a look how it's done with Next.js.
 
 ### Example with Next.js
 In */pages/index.tsx*
