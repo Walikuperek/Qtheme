@@ -167,9 +167,9 @@ if (savedTheme) {
 }
 
 // Or with your custom localStorage key, defaults to 'Qtheme'
-const savedThemeName: Theme | null = Qtheme.getTheme('yourThemeLocalStorageKey');
-if (savedThemeName) {
-  Qtheme.setTheme(savedThemeName, {token: 'yourThemeLocalStorageKey'});
+const savedTheme: Theme | null = Qtheme.getTheme('yourThemeLocalStorageKey');
+if (savedTheme) {
+  Qtheme.setTheme(savedTheme, {token: 'yourThemeLocalStorageKey'});
 } else {
   Qtheme.setTheme(darkTheme, {token: 'yourThemeLocalStorageKey'});
 }
