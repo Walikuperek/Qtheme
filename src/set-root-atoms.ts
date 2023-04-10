@@ -4,16 +4,6 @@ import { DEFAULT_OPTIONS } from './config';
 
 /**
  * Main engine of Qtheme. Made to set root atoms of theme.
- * @param atoms
- * @param options defaults to DEFAULT_OPTIONS
- *
- * ```
- * DEFAULT_OPTIONS = {
- *  generateCSS: true,
- *  token: 'Qtheme',
- *  commonToken: 'Qtheme-common'
- * }
- * ```
  */
 export const setRootAtoms = (atoms: ThemeAtom[], options?: Partial<SetRootAtomsOptions>): void => {
   const opts: SetRootAtomsOptions = options ? { ...DEFAULT_OPTIONS, ...options } : DEFAULT_OPTIONS; // to ensure that all options are set
