@@ -150,7 +150,7 @@ import {Qtheme} from '@quak.lib/qtheme'
 const currentTheme = Qtheme.getTheme();
 
 // Optional, to change default localStorage key, defaults to 'Qtheme'
-const currentThemeName = Qtheme.getTheme('yourThemeLocalStorageKey');
+const currentTheme = Qtheme.getTheme('yourThemeLocalStorageKey');
 ```
 
 #### Initialize theme
