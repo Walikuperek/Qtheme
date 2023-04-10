@@ -6,6 +6,7 @@
 
 * [GitHub repository](https://github.com/Walikuperek/Qtheme)
 * [NPM package](https://www.npmjs.com/package/@quak.lib/qtheme)
+* [Examples repository](https://github.com/Walikuperek/Qtheme-examples)
 
 ~7kb.js, simple, fast and production-ready *css-in-js* library for managing themes in your app. Create multiple themes and switch between them with **`Qtheme.setTheme(theme)`**
 
