@@ -75,7 +75,7 @@ const darkTheme: Theme = {
       ['text-primary', 'color:var(--primary)']
   ] 
 };
-const lightTeme: Theme = {
+const lightTheme: Theme = {
   name: 'light',
   atoms: [
       ['primary', 'dodgerblue'],
@@ -90,7 +90,7 @@ const lightTeme: Theme = {
 Qtheme.setTheme(darkTheme);
 
 // Change theme
-Qtheme.setTheme(lightTeme);
+Qtheme.setTheme(lightTheme);
 ```
 
 ```html
@@ -131,7 +131,7 @@ const darkTheme: Theme = {
       ['text-primary', 'color:var(--primary)']
   ] 
 };
-const lightTeme: Theme = {
+const lightTheme: Theme = {
   name: 'light',
   atoms: [
       ['primary', 'dodgerblue'],
@@ -157,7 +157,7 @@ const currentTheme = Qtheme.getTheme('yourThemeLocalStorageKey');
 You can utilize that Qtheme will save your theme in localStorage, you can initialize it on app start.
 ```typescript
 import {Qtheme} from '@quak.lib/qtheme'
-import {lightTeme, darkTheme} from 'path/to/your/themes'
+import {lightTheme, darkTheme} from 'path/to/your/themes'
 
 const savedTheme: Theme | null = Qtheme.getTheme();
 if (savedTheme) {
@@ -178,12 +178,12 @@ if (savedTheme) {
 #### Change theme
 ```typescript
 import {Qtheme} from '@quak.lib/qtheme'
-import {lightTeme} from 'path/to/your/themes'
+import {lightTheme} from 'path/to/your/themes'
 
-Qtheme.setTheme(lightTeme);
+Qtheme.setTheme(lightTheme);
 
 // Or with your custom localStorage key, defaults to 'Qtheme'
-Qtheme.setTheme(lightTeme, {token: 'yourThemeLocalStorageKey'});
+Qtheme.setTheme(lightTheme, {token: 'yourThemeLocalStorageKey'});
 ```
 
 #### Use theme in HTML
@@ -298,23 +298,134 @@ Examples are located in [GitHub Qtheme-examples](https://github.com/Walikuperek/
 ### Vanilla
 Try Qtheme with vanilla JS/TS and HTML.
 #### Javascript + HTML
-[GitHub vanilla JS example](https://github.com/Walikuperek/Qtheme-examples/tree/master/vanilla)
+[GitHub vanilla JS usage example](https://github.com/Walikuperek/Qtheme-examples/tree/master/vanilla)
+
+Brief example:
+```javascript
+import {Qtheme} from '@quak.lib/qtheme'
+import {darkTheme} from 'path/to/your/themes'
+
+const savedTheme = Qtheme.getTheme();
+if (savedTheme) {
+  Qtheme.setTheme(savedTheme);
+} else {
+  // Set some default theme
+  Qtheme.setTheme(darkTheme);
+}
+```
+```html
+<div class="bg-color">
+  <h1 class="text-primary">Hello world!</h1>
+  <p class="text-color">This is regular text color</p>
+</div>
+```
+
 
 #### Typescript + HTML
-[GitHub Typescript example](https://github.com/Walikuperek/Qtheme-examples/tree/master/typescript)
+[GitHub Typescript usage example repo](https://github.com/Walikuperek/Qtheme-examples/tree/master/typescript)
+
+Brief example:
+```typescript
+import {Qtheme, Theme} from '@quak.lib/qtheme'
+import {darkTheme} from 'path/to/your/themes'
+
+const savedTheme: Theme | null  = Qtheme.getTheme();
+if (savedTheme) {
+  Qtheme.setTheme(savedTheme);
+} else {
+  // Set some default theme
+  Qtheme.setTheme(darkTheme);
+}
+```
+```html
+<div class="bg-color">
+  <h1 class="text-primary">Hello world!</h1>
+  <p class="text-color">This is regular text color</p>
+</div>
+```
 
 ### Framework/library
 **Qtheme** works with **any** framework/library. You can use it with Angular, React, Svelte, Vue, etc.
 
 #### Angular
-[GitHub Angular Example](https://github.com/Walikuperek/Qtheme-examples/tree/master/angular)
+[GitHub Angular usage Example repo](https://github.com/Walikuperek/Qtheme-examples/tree/master/angular)
+
+Brief example:
+```typescript
+import {Qtheme, Theme} from '@quak.lib/qtheme'
+import {darkTheme} from 'path/to/your/themes'
+
+class AppComponent {
+  constructor() {
+    const savedTheme: Theme | null = Qtheme.getTheme();
+    if (savedTheme) {
+      Qtheme.setTheme(savedTheme);
+    } else {
+      // Set some default theme
+      Qtheme.setTheme(darkTheme);
+    }
+  }
+}
+```
+```html
+<div class="bg-color">
+  <h1 class="text-primary">Hello world!</h1>
+  <p class="text-color">This is regular text color</p>
+</div>
+```
 
 #### React
-[GitHub React example](https://github.com/Walikuperek/Qtheme-examples/tree/master/react)
+[GitHub React usage example repo](https://github.com/Walikuperek/Qtheme-examples/tree/master/react)
+
+Brief example:
+```tsx
+import {Qtheme} from '@quak.lib/qtheme'
+import {darkTheme} from 'path/to/your/themes'
+
+const App = () => {
+  useEffect(() => {
+    const savedTheme = Qtheme.getTheme();
+    if (savedTheme) {
+      Qtheme.setTheme(savedTheme);
+    } else {
+      // Set some default theme
+      Qtheme.setTheme(darkTheme);
+    }
+  }, []);
+  
+  return (
+    <div className="bg-color">
+      <h1 className="text-primary">Hello world!</h1>
+      <p className="text-color">This is regular text color</p>
+    </div>
+  );
+}
+```
+
 
 #### Svelte
-[GitHub Svelte example](https://github.com/Walikuperek/Qtheme-examples/tree/master/svelte)
+[GitHub Svelte usage example repo](https://github.com/Walikuperek/Qtheme-examples/tree/master/svelte)
 
+Brief example:
+```html
+<script>
+  import {Qtheme} from '@quak.lib/qtheme'
+  import {darkTheme} from 'path/to/your/themes'
+  
+  const savedTheme = Qtheme.getTheme();
+  if (savedTheme) {
+    Qtheme.setTheme(savedTheme);
+  } else {
+    // Set some default theme
+    Qtheme.setTheme(darkTheme);
+  }
+</script>
+
+<div class="bg-color">
+  <h1 class="text-primary">Hello world!</h1>
+  <p class="text-color">This is regular text color</p>
+</div>
+```
 
 ## License
 
