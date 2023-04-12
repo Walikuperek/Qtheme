@@ -168,18 +168,18 @@ To prevent such a behavior use `:root` in CSS to initialize theme atoms, `it's o
 
 #### Get theme
 ```typescript
-import {Qtheme} from '@quak.lib/qtheme'
+import {Qtheme, Theme} from '@quak.lib/qtheme'
 
-const currentTheme = Qtheme.getTheme();
+const currentTheme: Theme | null = Qtheme.getTheme();
 
 // Optional, to change default localStorage key, defaults to 'Qtheme'
-const currentTheme = Qtheme.getTheme('yourThemeLocalStorageKey');
+const currentTheme: Theme | null = Qtheme.getTheme('yourThemeLocalStorageKey');
 ```
 
 #### Initialize theme
 You can utilize that Qtheme will save your theme in localStorage, you can initialize it on app start.
 ```typescript
-import {Qtheme} from '@quak.lib/qtheme'
+import {Qtheme, Theme} from '@quak.lib/qtheme'
 import {lightTheme, darkTheme} from 'path/to/your/themes'
 
 const savedTheme: Theme | null = Qtheme.getTheme();
@@ -245,11 +245,11 @@ Initialize or change theme with `setTheme` method. Qtheme will save theme in *lo
 import {Qtheme, Theme, SetRootAtomOptions} from '@quak.lib/qtheme'
 
 interface SetRootAtomOptions {
-  token?: string;
-  generateCSS?: boolean;
+  token?: string; // 'Qtheme'
+  generateCSS?: boolean; // true
 }
 
-Qtheme.setTheme(theme: Theme, options?: SetRootAtomOptions)
+Qtheme.setTheme(theme: Theme, options?: Partial<SetRootAtomsOptions>)
 ```
 
 #### Get theme API
@@ -266,11 +266,11 @@ You can set common theme atoms with `setCommonAtoms` method. It will save theme 
 import {Qtheme, ThemeAtom, SetRootAtomOptions} from '@quak.lib/qtheme'
 
 interface SetCommonAtomsOptions {
-  commonToken?: string;
-  generateCSS?: boolean;
+  commonToken?: string; // 'Qtheme-common'
+  generateCSS?: boolean; // true
 }
 
-Qtheme.setCommonAtoms(atoms: ThemeAtom[], options?: SetCommonAtomsOptions)
+Qtheme.setCommonAtoms(atoms: ThemeAtom[], options?: Partial<SetRootAtomsOptions>)
 ```
 
 #### Get common theme atoms
@@ -284,7 +284,7 @@ Qtheme.getCommonAtoms(commonToken?: string): ThemeAtom[] | null
 #### Auto-generated CSS
 Qtheme can generate CSS for you(for theme atoms), so you don't have to write it by yourself. It's optional, you can use it or not.
 ```typescript
-import {Qtheme, ThemeAtom, SetRootAtomOptions} from '@quak.lib/qtheme'
+import {ThemeAtom} from '@quak.lib/qtheme'
 
 const yourThemeAtoms: ThemeAtom[] = [
   // Without CSS Generation

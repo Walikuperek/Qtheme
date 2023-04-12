@@ -3,12 +3,20 @@ import { Theme, ThemeAtom } from './interfaces';
 
 const lightTheme = {
   name: 'light',
-  atoms: [['bgColor', '#fff']],
+  atoms: [
+    ['bgColor', '#fff'],
+    ['color', 'color:#000'],
+    ['bg-color-inner', 'var(--bg-color)'],
+  ],
 } as Theme;
 
 const darkTheme = {
   name: 'dark',
-  atoms: [['bg-color', '#000']],
+  atoms: [
+    ['bg-color', '#000'],
+    ['color', 'color:#fff'],
+    ['bg-color-inner', 'var(--bg-color)'],
+  ],
 } as Theme;
 
 const commonAtoms = [
