@@ -4,6 +4,7 @@
 ![LicenseBadge](https://img.shields.io/github/license/walikuperek/qtheme)
 ![TestsBadge](https://img.shields.io/badge/Tests-7%2F7%20%E2%9C%85-success)
 
+* [Website & Docs & DEMO](https://quak.com.pl/lib/qtheme/index.html)
 * [GitHub repository](https://github.com/Walikuperek/Qtheme)
 * [NPM package](https://www.npmjs.com/package/@quak.lib/qtheme)
 * [Examples repository](https://github.com/Walikuperek/Qtheme-examples)
@@ -16,32 +17,34 @@ Tested in **Svelte**, **Angular**, **React**. Will work with any framework/libra
 > 
 > Try [vitejs.dev](https://vitejs.dev/) to use powerful import/export in vanilla JS
 
+## Requirements
+None, works with any framework and plain JS/TS with HTML.
+
 ## Install
 ```bash
 npm install @quak.lib/qtheme
 ```
 
+## Getting started
+Qtheme lets you:
+* Create infinite number of themes
+* Switch between them easily
+* Set common theme atoms for all themes
+* Initialize already chosen theme on app start
+* Generate CSS classes for you, so you don't have to write it by yourself
+
+Continue getting started at [Qtheme Docs - Getting started](https://quak.com.pl/lib/qtheme/docs/getting-started.html)
+
+## API
+
+You will find all information about Qtheme theming API in [Qtheme Docs - API](https://quak.com.pl/lib/qtheme/docs/api.html)
+
+
 ## Qtheme - Table of Contents
 
-* [Requirements](#requirements)
-* [Installation](#installation)
 * [Overview](#overview)
-* [Getting started](#getting-started)
-  - [Qtheme first things first](#qtheme---first-things-first)
-    * [Declare themes](#declare-themes)
-      - [:root default theme atoms](#root-default-theme-atoms)
-    * [Get theme](#get-theme)
-    * [Initialize theme](#initialize-theme)
-    * [Change theme](#change-theme)
-    * [Use theme in HTML](#use-theme-in-html)
-    * [Common theme atoms](#common-theme-atoms)
-* [API](#api)
-  - [Qtheme](#qtheme-api)
-    * [Set theme](#set-theme-api)
-    * [Get theme](#get-theme-api)
-    * [Set common theme atoms](#set-common-theme-atoms)
-    * [Get common theme atoms](#get-common-theme-atoms)
-    * [Auto-generated CSS](#auto-generated-css)
+* [Basic usage](#basic-usage)
+* [Advanced usage](#advanced-usage)
 * [Examples](#examples)
   - [Vanilla](#vanilla)
     * [Javascript + HTML](#javascript--html)
@@ -53,17 +56,84 @@ npm install @quak.lib/qtheme
 * [License](#license)
 
 
-## Requirements
-None, works with any framework and plain JS/TS with HTML.
+## Overview
+Qtheme is based on `theme atoms`
 
+Atom is a single theme element concept. It consists of **name** and **value**. Name is a string, value is a string or object.
 
-## Installation
-```bash
-npm install @quak.lib/qtheme
+```typescript
+import { ThemeAtom } from '@quak.lib/qtheme'
+
+const themeAtoms: ThemeAtom[] = [
+  ['bg', '#333']
+  ['bg', 'background:#333'],
+  ['bg', { 'background': '#333' }],
+  ['bg:hover', { 'background': '#333' }],
+  ['bg::after:hover', { 'content': 'Hello world!'; 'color': 'white', 'background': '#333' }]
+]
 ```
 
+You can use atoms to create **compound CSS styles**. For example, you can create a button with `btn` atom and `btn-primary` atom. `btn-primary` will inherit all styles from `btn` atom and add some additional styles.
 
-## Overview
+```tsx
+import { Theme } from '@quak.lib/qtheme'
+import { themeAtoms } from './path/to/your/themeAtoms'
+import { Qtheme } from "./qtheme";
+
+const btn = {
+  'font-size': '1rem',
+  'color': 'var(--primary)',
+  'background-color': 'var(--primary-inner)',
+  'padding': '0.5rem 1rem',
+  'border': '1.5px solid var(--primary)',
+  'outline-color': 'var(--primary-focus)',
+  'border-radius': '0.25rem',
+};
+const btnPrimary = {
+  ...btn,
+  'background-color': 'var(--primary-focus)',
+  'color': 'var(--primary-content)'
+}
+const btnHover = {
+  'background-color': 'var(--primary)',
+  'color': 'var(--primary-content)',
+  'cursor': 'pointer'
+};
+const btnActive = {
+  'border-style': 'inset',
+  'border-width': '1.5px',
+}
+
+const commonAtoms: ThemeAtom[] = [
+  ['btn', btn],
+  ['btn:hover', btnHover],
+  ['btn:active', btnActive],
+  ['btn-primary', btnPrimary],
+  ['btn-primary:hover', btnHover],
+  ['btn-primary:active', btnActive],
+]
+
+const exampleDarkTheme: Theme = {
+  name: 'dark',
+  atoms: [...themeAtoms, ...commonAtoms]
+}
+
+Qtheme.setTheme(exampleDarkTheme);
+// if no need to override commonAtoms between themes, you can use
+Qtheme.setCommonAtoms(commonAtoms)
+// or at the start of your app
+Qtheme.init(defaultTheme, commonAtoms)
+```
+
+```html
+<!-- Use like-->
+<button class="btn">Button</button>
+<button class="btn-primary">Primary Button</button>
+```
+
+## Basic usage
+Basic usage example to show you how to use Qtheme. You can find more examples(JS/TS/React/Angular/Svelte) in [Qtheme Examples](https://github.com/Walikuperek/Qtheme-examples)
+
 ```typescript
 import {Qtheme, Theme} from '@quak.lib/qtheme'
 
@@ -88,8 +158,8 @@ const lightTheme: Theme = {
   ] 
 };
 
-// Init theme
-Qtheme.setTheme(darkTheme);
+// Init theme on app start * will load from local storage if exists
+Qtheme.init(darkTheme);
 
 // Change theme
 Qtheme.setTheme(lightTheme);
@@ -102,216 +172,87 @@ Qtheme.setTheme(lightTheme);
 </div>
 ```
 
+## Advanced usage
+Example of advanced usage with **compound CSS styles**.
 
-## Getting started
-**Qtheme** main goal is to provide easy way to manage themes in your app (JS/TS/any framework). It's not a CSS framework, it's just a library that will help you to manage themes.
+Create some buttons
 
-But... Qtheme can generate CSS for you(for theme atoms), so you don't have to write it by yourself. It's optional, you can use it or not.
+```html
+<button class="btn">Button</button>
+<button class="btn-primary">Primary Button</button>
+```
 
-To sum up, Qtheme lets you:
-* Create infinite number of themes
-* Switch between them easily
-* Set common theme atoms for all themes
-* Initialize already chosen theme on app start
-* Generate CSS classes for you, so you don't have to write it by yourself
-
-
-### Qtheme - first things first
-#### Declare themes
+Declare theme
 ```typescript
-import {Theme} from '@quak.lib/qtheme'
+import { Theme, ThemeAtom } from '@quak.lib/qtheme'
 
 const darkTheme: Theme = {
-  name: 'dark',
-  atoms: [
-      // Will not generate any CSS, only :root { --primary: dodgerblue } 
-      ['primary', 'dodgerblue'],
-      
-      // Will generate CSS like: .bg-color { background-color: var(--bg-color) }
-      ['bg-color', 'background-color:hsl(0, 100%, 0%)'],
-      ['text-color', 'color:#fff'],
-      ['text-primary', 'color:var(--primary)']
-  ] 
-};
-const lightTheme: Theme = {
-  name: 'light',
-  atoms: [
-      ['primary', 'dodgerblue'],
-      
-      ['bg-color', 'background-color:hsl(0, 0%, 100%)'],
-      ['text-color', 'color:black'],
-      ['text-primary', 'color:var(--primary)']
-  ] 
+    name: 'dark',
+    atoms: [
+      ['primary', 'hsl(263, 66%, 63%)'], // purple
+      ['primary-inner', 'hsl(263, 66%, 20%)'],
+      ['primary-focus', 'hsl(263, 66%, 40%)'],
+      ['primary-content', 'white'],
+    ]
 };
 ```
 
-##### :root default theme atoms
-Without default values in CSS, if you want to:
-```css
-.your-btn {
-  /* in IDE --primary will be underlined with error - possible undefined variable */
-  background-color: var(--primary); /* will work after loading theme, but in IDE error will be shown */
+Style buttons
+```typescript
+const btn = {
+    'font-size': '1rem',
+    'padding': '0.5rem 1rem',
+    'color': 'var(--primary)',
+    'border': '1.5px solid var(--primary)',
+    'border-radius': '0.25rem',
+    'background-color': 'var(--primary-inner)',
+    'outline-color': 'var(--primary-focus)',
+};
+const btnPrimary = {
+    ...btn,
+    'background-color': 'var(--primary-focus)',
+    'color': 'var(--primary-content)'
 }
 ```
-
-To prevent such a behavior use `:root` in CSS to initialize theme atoms, `it's optional will work without it, but...`. 
-
-```css
-/* Default variables */
-:root {
-    --primary: dodgerblue;
-    --bg-color: hsl(0, 100%, 0%);
-    --text-color: #fff;
-    --text-primary: var(--primary);
-}
-```
-
-#### Get theme
+Add some states for buttons
 ```typescript
-import {Qtheme, Theme} from '@quak.lib/qtheme'
-
-const currentTheme: Theme | null = Qtheme.getTheme();
-
-// Optional, to change default localStorage key, defaults to 'Qtheme'
-const currentTheme: Theme | null = Qtheme.getTheme('yourThemeLocalStorageKey');
-```
-
-#### Initialize theme
-You can utilize that Qtheme will save your theme in localStorage, you can initialize it on app start.
-```typescript
-import {Qtheme, Theme} from '@quak.lib/qtheme'
-import {lightTheme, darkTheme} from 'path/to/your/themes'
-
-const savedTheme: Theme | null = Qtheme.getTheme();
-if (savedTheme) {
-  Qtheme.setTheme(savedTheme);
-} else {
-  Qtheme.setTheme(darkTheme);
+const btnHover = {
+    'background-color': 'var(--primary)',
+    'color': 'var(--primary-content)',
+    'cursor': 'pointer'
+};
+const btnActive = {
+    'border-style': 'inset'
 }
 
-// Or with your custom localStorage key, defaults to 'Qtheme'
-const savedTheme: Theme | null = Qtheme.getTheme('yourThemeLocalStorageKey');
-if (savedTheme) {
-  Qtheme.setTheme(savedTheme, {token: 'yourThemeLocalStorageKey'});
-} else {
-  Qtheme.setTheme(darkTheme, {token: 'yourThemeLocalStorageKey'});
-}
 ```
-
-#### Change theme
+Declare common atoms
 ```typescript
-import {Qtheme} from '@quak.lib/qtheme'
-import {lightTheme} from 'path/to/your/themes'
+import { ThemeAtom } from '@quak.lib/qtheme'
 
-Qtheme.setTheme(lightTheme);
-
-// Or with your custom localStorage key, defaults to 'Qtheme'
-Qtheme.setTheme(lightTheme, {token: 'yourThemeLocalStorageKey'});
+const commonThemeAtoms: ThemeAtom[] = [
+    ['btn', btn],
+    ['btn:hover', btnHover],
+    ['btn:active', btnActive],
+    ['btn-primary', btnPrimary],
+    ['btn-primary:hover', btnHover],
+    ['btn-primary:active', btnActive],
+]
 ```
-
-#### Use theme in HTML
-```html
-<div class="bg-color">
-  <h1 class="text-primary">Hello world!</h1>
-  <p class="text-color">This is regular text color</p>
-</div>
-```
-
-#### Common theme atoms
+Set theme
 ```typescript
-import {Qtheme, ThemeAtom} from '@quak.lib/qtheme'
+import { Qtheme } from '@quak.lib/qtheme'
+import { lightTheme, darkTheme, commonThemeAtoms } from '/path/to/your/themes'
 
-const atoms: ThemeAtom[] = [
-  ['border-radius', 'border-radius:5px'],
-  ['border-radius-oval', 'border-radius:50vw 50vw'],
-  ['font-size', 'font-size:16px'],
-  ['font-size-12', 'font-size:12px'],
-  ['font-size-14', 'font-size:14px'],
-  ['bordered', 'border-radius:var(--border-radius)']
-];
+// will load from local storage if exists
+Qtheme.init(darkTheme, { commonAtoms: commonThemeAtoms })
+// or
+Qtheme.setTheme(darkTheme)
+Qtheme.setCommonAtoms(commonAtoms)
 
-Qtheme.setCommonAtoms(atoms);
-
-// or with your custom localStorage key, defaults to 'Qtheme-common'
-Qtheme.setCommonAtoms(atoms, {commonToken: 'yourCustomCommonThemeAtomsToken'});
+// Change theme to see the difference
+Qtheme.setTheme(lightTheme)
 ```
-
-
-## API
-### Qtheme API
-#### Set theme API
-Initialize or change theme with `setTheme` method. Qtheme will save theme in *localStorage*. You can change default key with `token` option.
-```typescript
-import {Qtheme, Theme, SetRootAtomOptions} from '@quak.lib/qtheme'
-
-interface SetRootAtomOptions {
-  token?: string; // 'Qtheme'
-  generateCSS?: boolean; // true
-}
-
-Qtheme.setTheme(theme: Theme, options?: Partial<SetRootAtomsOptions>)
-```
-
-#### Get theme API
-Use `getTheme` to get current theme (from *localStorage*). You can initialize theme on app start with that.
-```typescript
-import {Qtheme, Theme} from '@quak.lib/qtheme'
-
-Qtheme.getTheme(token?: string): Theme | null
-```
-
-#### Set common theme atoms
-You can set common theme atoms with `setCommonAtoms` method. It will save theme atoms in *localStorage*. You can change default key with `commonToken` option.
-```typescript
-import {Qtheme, ThemeAtom, SetRootAtomOptions} from '@quak.lib/qtheme'
-
-interface SetCommonAtomsOptions {
-  commonToken?: string; // 'Qtheme-common'
-  generateCSS?: boolean; // true
-}
-
-Qtheme.setCommonAtoms(atoms: ThemeAtom[], options?: Partial<SetRootAtomsOptions>)
-```
-
-#### Get common theme atoms
-Use `getCommonAtoms` to get current common theme atoms (from *localStorage*). You can initialize common theme atoms on app start with that.
-```typescript
-import {Qtheme, ThemeAtom} from '@quak.lib/qtheme'
-
-Qtheme.getCommonAtoms(commonToken?: string): ThemeAtom[] | null
-```
-
-#### Auto-generated CSS
-Qtheme can generate CSS for you(for theme atoms), so you don't have to write it by yourself. It's optional, you can use it or not.
-```typescript
-import {ThemeAtom} from '@quak.lib/qtheme'
-
-const yourThemeAtoms: ThemeAtom[] = [
-  // Without CSS Generation
-  ['primary', 'dodgerblue'],
-  ['accent', 'pink'],
-  ['bg', '#333'],
-  ['bg-inner', '#222'],
-  
-  // With CSS Generation 
-  ['bg-color', 'background-color:var(--bg)'],
-  ['bg-accent', 'background-color:var(--accent)'],
-  ['text-color', 'color:#fff'],
-  ['text-accent', 'color:var(--accent)']
-];
-```
-
-> You should use auto-generated CSS classes. It's less code for you ;)
-
-If you want to use auto-generated CSS classes then you need to provide `color:` or `background-color:` or anything you need. Just follow regular CSS syntax.
-
-| **ThemeAtom**                               | **generated :root variable**        | **generated CSS**                            |
-|---------------------------------------------|-------------------------------------|----------------------------------------------|
-| 'primary-color', 'color:hsl(53, 100%, 50%)' | --primary-color: hsl(53, 100%, 50%) | .primary-color {color:var(--primary-color)}  |
-| 'bg-color', 'background-color:#fff'         | --bg-color: #fff                    | .bg-color {background-color:var(--bg-color)} |
-| 'text-color', '#fff'                        | --text-color: #fff                  | <won't generate CSS>                         |
-| ...                                         | ...                                 | ...                                          |
- 
 
 ## Examples
 **Qtheme** is agnostic to any framework/library. You can use it with any of them.
