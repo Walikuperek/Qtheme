@@ -17,6 +17,32 @@ Tested in **Svelte**, **Angular**, **React**. Will work with any framework/libra
 > 
 > Try [vitejs.dev](https://vitejs.dev/) to use powerful import/export in vanilla JS
 
+## What is Qtheme?
+
+```typescript
+import {Qtheme, Theme} from '@quak.lib/qtheme'
+
+const lightTheme: Theme = {
+  name: 'light',
+  atoms: [
+      ['primary', 'dodgerblue'],
+      
+      ['bg-color', 'background-color:hsl(0, 0%, 100%)'],
+      ['text-color', 'color:black'],
+      ['text-primary', 'color:var(--primary)']
+  ] 
+};
+
+// Change theme
+Qtheme.setTheme(lightTheme);
+```
+```html
+<div class="bg-color">
+  <h1 class="text-primary">Hello world!</h1>
+  <p class="text-color">This is regular text color</p>
+</div>
+```
+
 ## Requirements
 None, works with any framework and plain JS/TS with HTML.
 
@@ -113,16 +139,17 @@ const commonAtoms: ThemeAtom[] = [
   ['btn-primary:active', btnActive],
 ]
 
+const darkThemeAtoms = themeAtoms
 const exampleDarkTheme: Theme = {
   name: 'dark',
-  atoms: [...themeAtoms, ...commonAtoms]
+  atoms: [...darkThemeAtoms, ...commonAtoms]
 }
 
 Qtheme.setTheme(exampleDarkTheme);
 // if no need to override commonAtoms between themes, you can use
 Qtheme.setCommonAtoms(commonAtoms)
 // or at the start of your app
-Qtheme.init(defaultTheme, commonAtoms)
+Qtheme.init(defaultTheme, { commonAtoms })
 ```
 
 ```html
