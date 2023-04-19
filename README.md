@@ -139,17 +139,7 @@ const commonAtoms: ThemeAtom[] = [
   ['btn-primary:active', btnActive],
 ]
 
-const darkThemeAtoms = themeAtoms
-const exampleDarkTheme: Theme = {
-  name: 'dark',
-  atoms: [...darkThemeAtoms, ...commonAtoms]
-}
-
-Qtheme.setTheme(exampleDarkTheme);
-// if no need to override commonAtoms between themes, you can use
-Qtheme.setCommonAtoms(commonAtoms)
-// or at the start of your app
-Qtheme.init(defaultTheme, { commonAtoms })
+// init with theme or with setCommonAtoms or with init at the beginning
 ```
 
 ```html

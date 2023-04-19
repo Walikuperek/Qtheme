@@ -1,6 +1,6 @@
 {
   "name": "@quak.lib/qtheme",
-  "version": "1.3.3",
+  "version": "1.3.4",
   "description": "Manage themes in your Angular/React/Svelte/any framework/JS/TS app. Production-ready, well documented and tested.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
