@@ -11,15 +11,15 @@
 
 ~5kb.js, 0 deps, fast, fully typed and production-ready *css-in-js* library for managing themes in your app. Create multiple themes and switch between them with **`Qtheme.setTheme(theme)`**
 
-*Single minified index.js versions*
+*Latest single minified index.js version*
 
-| minified version | link                                                             |
-|------------------|------------------------------------------------------------------|
-| 1.3.5            | [download](https://quak.com.pl/lib/qtheme/builds/1_3_5/index.js) |
-| 1.4.0            | [download](https://quak.com.pl/lib/qtheme/builds/1_4_0/index.js) |
+| minified version | link                                                             | size    |
+|------------------|------------------------------------------------------------------|---------|
+| 1.4.1            | [index.js](https://quak.com.pl/lib/qtheme/builds/1_4_1/index.js) | 5.04 KB |
 
-Tested in **Svelte**, **Angular**, **React**. Will work with any framework/library. Below examples.
 
+> Tested in **Svelte**, **Angular**, **React**. Will work with any framework/library. Below examples.
+>
 > Will work with **vanilla JS** if supports import/export
 > 
 > Try [vitejs.dev](https://vitejs.dev/) to use powerful import/export in vanilla JS
