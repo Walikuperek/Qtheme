@@ -4,7 +4,7 @@ import { DEFAULT_OPTIONS } from './config';
 
 export const setRootAtoms = (atoms: ThemeAtom[], options?: Partial<SetRootAtomsOptions>): void => {
   const opts: SetRootAtomsOptions = options ? { ...DEFAULT_OPTIONS, ...options } : DEFAULT_OPTIONS; // to ensure that all options are set
-  let cssCode = "";
+  let cssCode = '';
 
   for (const themeAtom of atoms) {
     const atom = Atom(themeAtom);
@@ -39,11 +39,11 @@ export const setRootAtoms = (atoms: ThemeAtom[], options?: Partial<SetRootAtomsO
 
 function Atom(atom: ThemeAtom) {
   const [atomName, atomValue] = atom;
-  const isAtomCompound = typeof atomValue === "object";
-  const isNameCSSRule = atomName.indexOf(":") !== -1;
-  const isValueCSSRule = typeof atomValue === "string" && atomValue.indexOf(":") !== -1;
+  const isAtomCompound = typeof atomValue === 'object';
+  const isNameCSSRule = typeof atomName === 'string' && atomName.indexOf(':') !== -1;
+  const isValueCSSRule = typeof atomValue === 'string' && atomValue.indexOf(':') !== -1;
   const splitAtomName = () => atomName.split(/:(.*)/s); // split at the first occurrence of ':' and keep the rest
-  const splitAtomValue = () => typeof atomValue === "string" ? atomValue.split(":") : ["", ""];
+  const splitAtomValue = () => typeof atomValue === 'string' ? atomValue.split(':') : ['', ''];
   const getCompoundClass = () => {
     let styledClass = isNameCSSRule ? `.${atomNameValue}:${atomNameCSSRule} {` : `.${atomName} {`;
     for (const [cssProperty, value] of Object.entries(atomValue)) {
@@ -57,11 +57,11 @@ function Atom(atom: ThemeAtom) {
   let atomNameCSSRule = atomValue;
 
   if (isNameCSSRule) {
-    const [cssKey, rule] = splitAtomName(); // ['bg', 'hover']
+    const [cssKey, rule] = splitAtomName(); // ['bgColor', 'hover']
     atomNameCSSRule = rule; // 'hover'
     atomNameValue = mapToKebabCase(cssKey); // 'bg'
   }
-  const rootVar = isNameCSSRule ? atomNameValue : mapToKebabCase(atomName);
+  const rootVar = isNameCSSRule ? mapToKebabCase(atomNameValue) : mapToKebabCase(atomName);
 
   return {
     rootVariableName: rootVar,
@@ -76,7 +76,7 @@ function Atom(atom: ThemeAtom) {
     splitAtomValue,
     getCompoundClass,
     setRootVar: (property = rootVar, value = atomValue) => {
-      typeof value === "string"
+      typeof value === 'string'
         ? document.documentElement.style.setProperty(`--${property}`, value)
         : void 0;
     }

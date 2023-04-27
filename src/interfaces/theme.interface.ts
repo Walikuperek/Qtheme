@@ -1,8 +1,10 @@
+import { CSSProps } from '../types';
+
 /**
  * @description Base css :root variable [key, value] or [key, { [key: string]: string }]
  * */
 export type AtomName = string;
-export type AtomValue = string | { [key: string]: string };
+export type AtomValue = string | CSSProps;
 export type ThemeAtom = [AtomName, AtomValue];
 
 /**
