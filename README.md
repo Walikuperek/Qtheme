@@ -11,7 +11,7 @@
 
 ~5kb.js, 0 deps, fast, fully typed and production-ready *css-in-js* library for managing themes in your app. Create multiple themes and switch between them with **`Qtheme.setTheme(theme)`**
 
-*Latest single minified index.js version*
+*Latest single minified index.js versions*
 
 | minified version | link                                                             | size    |
 |------------------|------------------------------------------------------------------|---------|
