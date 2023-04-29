@@ -6,7 +6,7 @@
 //    "moduleResolution": "node",
     "declaration": true,
     "outDir": "./dist",
-//    "outFile": "./dist/index.js",
+//    "outFile": "./dist/qtheme.js",
     "strict": true
   },
   "include": ["src"],

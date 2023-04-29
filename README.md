@@ -9,13 +9,15 @@
 * [NPM package](https://www.npmjs.com/package/@quak.lib/qtheme)
 * [Examples repository](https://github.com/Walikuperek/Qtheme-examples)
 
-~5kb.js, 0 deps, fast, fully typed and production-ready *css-in-js* library for managing themes in your app. Create multiple themes and switch between them with **`Qtheme.setTheme(theme)`**
+~5kb.js, 0 dependencies, fast, fully typed and production-ready *css-in-js* library for managing themes in your app. Create multiple themes and switch between them with **`Qtheme.setTheme(theme)`**
 
-*Latest single minified index.js versions*
+## Latest builds
+*Latest single minified qtheme.js versions*
 
-| minified version | link                                                             | size    |
-|------------------|------------------------------------------------------------------|---------|
-| 1.4.1            | [index.js](https://quak.com.pl/lib/qtheme/builds/1_4_1/index.js) | 5.04 KB |
+| minified version | link                                                               | size    |
+|------------------|--------------------------------------------------------------------|---------|
+| 1.5.0            | [qtheme.js](https://quak.com.pl/lib/qtheme/builds/1_5_0/qtheme.js) | 5.04 KB |
+| 1.4.1            | [qtheme.js](https://quak.com.pl/lib/qtheme/builds/1_4_1/index.js)  | 5.04 KB |
 
 
 > Tested in **Svelte**, **Angular**, **React**. Will work with any framework/library. Below examples.
@@ -32,8 +34,7 @@ import {Qtheme, Theme, CSSProps} from '@quak.lib/qtheme'
 // CSSProps from Qtheme for intelisense in IDE
 const btn: CSSProps = {
   'text-align': 'center', // use simple strings
-  border: '1 px solid var(--primary)', // or use JS version of CSS with intelisense     
-  backgroundColor: 'var(--primary)',
+  backgroundColor: 'var(--primary)', // or use JS version of CSS with intelisense   
   color: 'var(--primary)',
   fontWeight: 900
 }
