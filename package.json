@@ -1,9 +1,14 @@
 {
   "name": "@quak.lib/qtheme",
-  "version": "1.5.0",
+  "version": "1.5.1",
   "description": "Easy light/dark/infinite. Manage themes in JS/TS/any framework. Production-ready, well documented and tested.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "homepage": "https://quak.com.pl/lib/qtheme/index.html",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Walikuperek/Qtheme.git"
+  },
   "files": [
     "dist/**/*"
   ],

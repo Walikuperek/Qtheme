@@ -4,15 +4,21 @@
 ![LicenseBadge](https://img.shields.io/github/license/walikuperek/qtheme)
 ![TestsBadge](https://img.shields.io/badge/Tests-8%2F8%20%E2%9C%85-success)
 
-* [Website & Docs & DEMO](https://quak.com.pl/lib/qtheme/index.html)
+* [Website & Docs](https://quak.com.pl/lib/qtheme/index.html)
 * [GitHub repository](https://github.com/Walikuperek/Qtheme)
 * [NPM package](https://www.npmjs.com/package/@quak.lib/qtheme)
 * [Examples repository](https://github.com/Walikuperek/Qtheme-examples)
 
 ~5kb.js, 0 dependencies, fast, fully typed and production-ready *css-in-js* library for managing themes in your app. Create multiple themes and switch between them with **`Qtheme.setTheme(theme)`**
 
+# DEMO
+
+Check out [DEMO](https://quak.com.pl/lib/qtheme/index.html) at homepage to see Qtheme in action.
+
+![QthemeDEMO](https://quak.com.pl/assets/qtheme/qtheme_DEMO.png)
+
 ## Latest builds
-*Latest single minified qtheme.js versions*
+*Latest single minified qtheme.js versions (1.5.1 is just README update)*
 
 | minified version | link                                                               | size    |
 |------------------|--------------------------------------------------------------------|---------|
@@ -33,7 +39,7 @@ import {Qtheme, Theme, CSSProps} from '@quak.lib/qtheme'
 
 // CSSProps from Qtheme for intelisense in IDE
 const btn: CSSProps = {
-  'text-align': 'center', // use simple strings
+  'text-align': 'center', // use simple strings for anything you need
   backgroundColor: 'var(--primary)', // or use JS version of CSS with intelisense   
   color: 'var(--primary)',
   fontWeight: 900
@@ -137,7 +143,6 @@ You can use atoms to create **compound CSS styles**. For example, you can create
 
 ```tsx
 import { Theme, CSSProps } from '@quak.lib/qtheme'
-import { themeAtoms } from './path/to/your/themeAtoms'
 
 const btn: CSSProps = {
   fontSize: '1rem',
