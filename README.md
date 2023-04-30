@@ -4,33 +4,20 @@
 ![LicenseBadge](https://img.shields.io/github/license/walikuperek/qtheme)
 ![TestsBadge](https://img.shields.io/badge/Tests-8%2F8%20%E2%9C%85-success)
 
-* [Website & Docs](https://quak.com.pl/lib/qtheme/index.html)
+* [Qtheme Website & Docs](https://quak.com.pl/lib/qtheme/index.html)
 * [GitHub repository](https://github.com/Walikuperek/Qtheme)
 * [NPM package](https://www.npmjs.com/package/@quak.lib/qtheme)
-* [Examples repository](https://github.com/Walikuperek/Qtheme-examples)
+
+Created with ❤ by [QUAK](https://quak.com.pl)
 
 ~5kb.js, 0 dependencies, fast, fully typed and production-ready *css-in-js* library for managing themes in your app. Create multiple themes and switch between them with **`Qtheme.setTheme(theme)`**
 
-# DEMO
-
-Check out [DEMO](https://quak.com.pl/lib/qtheme/index.html) at homepage to see Qtheme in action.
-
-![QthemeDEMO](https://quak.com.pl/assets/qtheme/qtheme_DEMO.png)
-
-## Latest builds
-*Latest single minified qtheme.js versions (1.5.1 is just README update)*
-
-| minified version | link                                                               | size    |
-|------------------|--------------------------------------------------------------------|---------|
-| 1.5.0            | [qtheme.js](https://quak.com.pl/lib/qtheme/builds/1_5_0/qtheme.js) | 5.04 KB |
-| 1.4.1            | [qtheme.js](https://quak.com.pl/lib/qtheme/builds/1_4_1/index.js)  | 5.04 KB |
-
+## Examples repository
+Qtheme has separate [GitHub repo with examples](https://github.com/Walikuperek/Qtheme-examples) for each framework/compiler/library/vanilla JS/TS.
 
 > Tested in **Svelte**, **Angular**, **React**. Will work with any framework/library. Below examples.
 >
-> Will work with **vanilla JS** if supports import/export
-> 
-> Try [vitejs.dev](https://vitejs.dev/) to use powerful import/export in vanilla JS
+> Will work with **vanilla JS** if supports import/export. Below examples.
 
 ## What is Qtheme?
 
@@ -64,7 +51,7 @@ const lightTheme: Theme = {
     ['text-color', 'color:black'],
     ['text-primary', 'color:var(--primary)']
   ] 
-};
+}
 
 // Init/Change theme
 Qtheme.setTheme(lightTheme)
@@ -80,6 +67,12 @@ After you created `bg-color` atom you can use `class="bg-color"` to set backgrou
   <btn class="btn">Action</btn>
 </body>
 ```
+
+# DEMO
+
+Check out [DEMO](https://quak.com.pl/lib/qtheme/index.html) at homepage to see Qtheme in action.
+
+![QthemeDEMO](https://quak.com.pl/assets/qtheme/qtheme_DEMO.png)
 
 ## Requirements
 None, works with any framework and plain JS/TS with HTML.
@@ -117,6 +110,7 @@ You will find all information about Qtheme theming API in [Qtheme Docs - API](ht
     * [Svelte](#svelte)
     * [Angular](#angular)
     * [React](#react)
+* [Latest builds](#latest-builds)
 * [License](#license)
 
 
@@ -142,17 +136,15 @@ const themeAtoms: ThemeAtom[] = [
 You can use atoms to create **compound CSS styles**. For example, you can create a button with `btn` atom and `btn-primary` atom. `btn-primary` will inherit all styles from `btn` atom and add some additional styles.
 
 ```tsx
-import { Theme, CSSProps } from '@quak.lib/qtheme'
+import { Qtheme, ThemeAtom, CSSProps } from '@quak.lib/qtheme'
 
 const btn: CSSProps = {
   fontSize: '1rem',
+  padding: '0.5rem 1rem',
   color: 'var(--primary)',
   backgroundColor: 'var(--primary-inner)',
-  padding: '0.5rem 1rem',
   border: '1.5px solid var(--primary)',
-  outlineColor: 'var(--primary-focus)',
-  borderCadius: '0.25rem',
-};
+}
 const btnPrimary: CSSProps = {
   ...btn,
   backgroundColor: 'var(--primary-focus)',
@@ -162,10 +154,6 @@ const btnHover: CSSProps = {
   backgroundColor: 'var(--primary)',
   color: 'var(--primary-content)',
   cursor: 'pointer'
-};
-const btnActive: CSSProps = {
-  borderStyle: 'inset',
-  borderWidth: '1.5px',
 }
 
 const commonAtoms: ThemeAtom[] = [
@@ -177,11 +165,15 @@ const commonAtoms: ThemeAtom[] = [
   ['btn-primary:active', btnActive],
 ]
 
-// Init with Qtheme common atoms and theme atoms...
+// Init for all themes at the app start
+Qtheme.setCommonAtoms(commonAtoms)
+
+// Or init with theme atoms to override specific atoms
+Qtheme.init({ name: 'light', atoms: commonAtoms })
 ```
 
+Use your compound atoms in HTML
 ```html
-<!-- Use like-->
 <button class="btn">Button</button>
 <button class="btn-primary">Primary Button</button>
 ```
@@ -459,6 +451,19 @@ Brief example:
   <p class="text-color">This is regular text color</p>
 </div>
 ```
+
+## Latest builds
+
+*Latest single minified qtheme.js versions (1.5.1, 1.5.2 are just README updates)*
+
+| minified version | link                                                               | size    |
+|------------------|--------------------------------------------------------------------|---------|
+| 1.5.3            | [qtheme.js](https://quak.com.pl/lib/qtheme/builds/1_5_3/qtheme.js) | 5.09 KB |
+| 1.5.0            | [qtheme.js](https://quak.com.pl/lib/qtheme/builds/1_5_0/qtheme.js) | 5.04 KB |
+| 1.4.1            | [qtheme.js](https://quak.com.pl/lib/qtheme/builds/1_4_1/index.js)  | 5.04 KB |
+
+
+
 
 ## License
 

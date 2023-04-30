@@ -9,6 +9,11 @@ export const setRootAtoms = (atoms: ThemeAtom[], options?: Partial<SetRootAtomsO
   for (const themeAtom of atoms) {
     const atom = Atom(themeAtom);
 
+    if (atom.isAtomCompound && !opts.generateCSS) {
+      // Compound Atoms don't produce CSS variables
+      continue;
+    }
+
     if (!opts.generateCSS) {
       atom.setRootVar();
       continue;
