@@ -1,6 +1,6 @@
 {
   "name": "@quak.lib/qtheme",
-  "version": "1.5.3",
+  "version": "1.5.4",
   "description": "Easy light/dark/infinite. Manage themes in JS/TS/any framework. Production-ready, well documented and tested.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

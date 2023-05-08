@@ -4,13 +4,16 @@
 ![LicenseBadge](https://img.shields.io/github/license/walikuperek/qtheme)
 ![TestsBadge](https://img.shields.io/badge/Tests-8%2F8%20%E2%9C%85-success)
 
-* [Qtheme Website & Docs](https://quak.com.pl/lib/qtheme/index.html)
-* [GitHub repository](https://github.com/Walikuperek/Qtheme)
-* [NPM package](https://www.npmjs.com/package/@quak.lib/qtheme)
+
+* [Qtheme GitHub repository](https://github.com/Walikuperek/Qtheme)
+* [Qtheme NPM package](https://www.npmjs.com/package/@quak.lib/qtheme)
 
 Created with ❤ by [QUAK](https://quak.com.pl)
 
 ~5kb.js, 0 dependencies, fast, fully typed and production-ready *css-in-js* library for managing themes in your app. Create multiple themes and switch between them with **`Qtheme.setTheme(theme)`**
+
+## Documentation
+Qtheme has [documentation](https://quak.com.pl/lib/qtheme/docs.html) with getting started, examples and API reference.
 
 ## Examples repository
 Qtheme has separate [GitHub repo with examples](https://github.com/Walikuperek/Qtheme-examples) for each framework/compiler/library/vanilla JS/TS.
@@ -123,13 +126,13 @@ Atom is a single theme element concept. It consists of **name** and **value**. N
 import { ThemeAtom } from '@quak.lib/qtheme'
 
 const themeAtoms: ThemeAtom[] = [
-  ['bg', '#333']
-  ['bg', 'background:#333'],
+  ['bg', '#333'],
+  ['bg-with-css-class', 'background:#333'],
 
   ['btn', { background: 'red', color: 'white' }],
   ['btn:hover', { background: 'ruby' }],
 
-  ['your-class::after:hover', { content: 'Hello world!', color: 'white', background: '#333' }]
+  ['your-class::after', { content: 'Hello world!', color: 'white', background: '#333' }]
 ]
 ```
 
@@ -193,7 +196,7 @@ const darkTheme: Theme = {
       ['text-color', 'color:#fff'],
       ['text-primary', 'color:var(--primary)']
   ] 
-};
+}
 const lightTheme: Theme = {
   name: 'light',
   atoms: [
@@ -203,7 +206,7 @@ const lightTheme: Theme = {
       ['text-color', 'color:black'],
       ['text-primary', 'color:var(--primary)']
   ] 
-};
+}
 
 // Init theme on app start * will load from local storage if exists
 Qtheme.init(darkTheme);
@@ -242,7 +245,7 @@ const darkTheme: Theme = {
       ['primary-content', 'white'],
       // ...
     ]
-};
+}
 ```
 
 Style buttons
@@ -454,7 +457,7 @@ Brief example:
 
 ## Latest builds
 
-*Latest single minified qtheme.js versions (1.5.1, 1.5.2 are just README updates)*
+*Latest single minified qtheme.js versions (1.5.1, 1.5.2, 1.5.4 are just README updates)*
 
 | minified version | link                                                               | size    |
 |------------------|--------------------------------------------------------------------|---------|
