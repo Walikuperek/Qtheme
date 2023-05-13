@@ -3,18 +3,20 @@ import { CSSProps } from '../types';
 export type AtomName = string;
 
 /**
+ * Atom value can be string | object. Simply your CSS rules or CSS value/CSS value + CSS property name.
  * @info AtomValue type contains any type, because it allows to use freely with React.
  */
 export type AtomValue = string | CSSProps | any;
 
 /**
- * @description Base css :root variable [key, value] or [key, { [key: string]: string }]
- * @example ['--color-primary', '#000']
+ * @example ['color-primary', '#000']
+ * @example ['color-primary', 'color:#000']
+ * @example ['color-primary', {color: '#000'}]
  * */
 export type ThemeAtom = [AtomName, AtomValue];
 
 /**
- * @description Theme interface, base on it your theme or extend this interface with your own properties.
+ * @description Theme interface, base on it your theme.
  */
 export interface Theme {
   name: string;

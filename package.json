@@ -1,6 +1,6 @@
 {
   "name": "@quak.lib/qtheme",
-  "version": "1.5.5",
+  "version": "1.5.12",
   "description": "Easy light/dark/infinite. Manage themes in JS/TS/any framework. Production-ready, well documented and tested.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -8,6 +8,9 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/Walikuperek/Qtheme.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Walikuperek/Qtheme/issues"
   },
   "files": [
     "dist/**/*"
@@ -26,19 +29,13 @@
     "angular theme",
     "js theme",
     "ts theme",
-    "react",
-    "angular",
-    "js",
-    "ts",
-    "javascript",
-    "typescript",
     "css-in-js",
-    "cssinjs",
     "theming",
     "theme",
     "themes",
     "theme changer",
-    "theme manager"
+    "theme manager",
+    "quak"
   ],
   "author": "QUAK Kacper Walczak",
   "license": "MIT",

@@ -6,8 +6,9 @@ export const setRootAtoms = (atoms: ThemeAtom[], options?: Partial<SetRootAtomsO
   const opts: SetRootAtomsOptions = options ? { ...DEFAULT_OPTIONS, ...options } : DEFAULT_OPTIONS; // to ensure that all options are set
   let cssCode = '';
 
-  for (const themeAtom of atoms) {
-    const atom = Atom(themeAtom);
+  // Regular for loop is faster than for of loop
+  for (let i = 0; i < atoms.length; i++) {
+    const atom = Atom(atoms[i]);
 
     if (atom.isAtomCompound && !opts.generateCSS) {
       // Compound Atoms don't produce CSS variables
@@ -49,37 +50,30 @@ function Atom(atom: ThemeAtom) {
   const isValueCSSRule = typeof atomValue === 'string' && atomValue.indexOf(':') !== -1;
   const splitAtomName = () => atomName.split(/:(.*)/s); // split at the first occurrence of ':' and keep the rest
   const splitAtomValue = () => typeof atomValue === 'string' ? atomValue.split(':') : ['', ''];
-  const getCompoundClass = () => {
-    let styledClass = isNameCSSRule ? `.${atomNameValue}:${atomNameCSSRule} {` : `.${atomName} {`;
-    for (const [cssProperty, value] of Object.entries(atomValue)) {
-      styledClass += `${mapToKebabCase(cssProperty)}: ${value};`;
-    }
-    styledClass += "}\n";
-    return styledClass;
-  }
 
   let atomNameValue = atomName;
   let atomNameCSSRule = atomValue;
 
   if (isNameCSSRule) {
-    const [cssKey, rule] = splitAtomName(); // ['bgColor', 'hover']
-    atomNameCSSRule = rule; // 'hover'
-    atomNameValue = mapToKebabCase(cssKey); // 'bg'
+    const [cssKey, rule] = splitAtomName();
+    atomNameValue = mapToKebabCase(cssKey);
+    atomNameCSSRule = rule;
   }
   const rootVar = isNameCSSRule ? mapToKebabCase(atomNameValue) : mapToKebabCase(atomName);
 
   return {
     rootVariableName: rootVar,
-    name: atomName,
-    value: atomValue,
-    atomNameValue,
-    atomNameCSSRule,
     isAtomCompound,
-    isNameCSSRule,
     isValueCSSRule,
-    splitAtomName,
     splitAtomValue,
-    getCompoundClass,
+    getCompoundClass: () => {
+      let styledClass = isNameCSSRule ? `.${atomNameValue}:${atomNameCSSRule} {` : `.${atomName} {`;
+      for (const [cssProperty, value] of Object.entries(atomValue)) {
+        styledClass += `${mapToKebabCase(cssProperty)}: ${value};`;
+      }
+      styledClass += '}\n';
+      return styledClass;
+    },
     setRootVar: (property = rootVar, value = atomValue) => {
       typeof value === 'string'
         ? document.documentElement.style.setProperty(`--${property}`, value)
