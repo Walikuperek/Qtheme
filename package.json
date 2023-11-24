@@ -1,9 +1,17 @@
 {
   "name": "@quak.lib/qtheme",
-  "version": "1.0.2",
-  "description": "Simple, fast and production ready library for managing themes in your app.",
+  "version": "1.5.17",
+  "description": "Easy light/dark/infinite. Manage themes in JS/TS/any framework. Production-ready, well documented and tested.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "homepage": "https://quak.com.pl/lib/qtheme/index.html",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Walikuperek/Qtheme.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Walikuperek/Qtheme/issues"
+  },
   "files": [
     "dist/**/*"
   ],
@@ -13,14 +21,23 @@
     "prettier:check": "prettier --check \"src/**/*.ts\"",
     "lint": "eslint \"src/**/*.ts\"",
     "test": "jest --config jestconfig.json",
-    "prepublishOnly" : "npm test && npm run lint",
+    "prepublishOnly": "npm test && npm run lint",
     "publish": "npm run build && npm publish --access public"
   },
   "keywords": [
+    "react theme",
+    "angular theme",
+    "react theming",
+    "angular theming",
+    "js theme",
+    "ts theme",
+    "css-in-js",
+    "theming",
     "theme",
     "themes",
     "theme changer",
-    "theme manager"
+    "theme manager",
+    "quak"
   ],
   "author": "QUAK Kacper Walczak",
   "license": "MIT",

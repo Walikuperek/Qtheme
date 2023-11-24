@@ -3,23 +3,49 @@ import { Theme, ThemeAtom } from './interfaces';
 
 const lightTheme = {
   name: 'light',
-  atoms: [['bgColor', '#fff']],
+  atoms: [
+    ['bgColor', '#fff'],
+    ['color', 'color:#000'],
+    ['bg-color-inner', 'var(--bg-color)'],
+  ],
 } as Theme;
 
 const darkTheme = {
   name: 'dark',
-  atoms: [['bg-color', '#000']],
+  atoms: [
+    ['bg-color', '#000'],
+    ['color', 'color:#fff'],
+    ['bg-color-inner', 'var(--bg-color)'],
+    ['btn', {
+      'background-color': 'var(--bg-color-inner)',
+      'outline': '1px solid var(--color)',
+    }],
+    ['btn:hover', {
+      'background-color': 'black',
+      'outline': '1px solid black',
+      'color': 'white'
+    }]
+  ],
 } as Theme;
 
 const commonAtoms = [
   ['font-family', 'sans-serif'],
-  ['font-size', '16px'],
+  ['font-size', 'font-size:16px'],
+  ['font-size:hover', 'font-size:20px'],
 ] as ThemeAtom[];
 
 describe('Qtheme', () => {
   it('should return null if theme was not set already', () => {
     const theme = Qtheme.getTheme();
     expect(theme).toBeNull();
+  });
+
+  it('should init properly', () => {
+    Qtheme.init(darkTheme, {commonAtoms});
+    const cssBgRootVar = document.documentElement.style.getPropertyValue('--bg-color');
+    const cssFontFamilyRootVar = document.documentElement.style.getPropertyValue('--font-family');
+    expect(cssBgRootVar).toEqual('#000');
+    expect(cssFontFamilyRootVar).toEqual('sans-serif');
   });
 
   it('should set light theme properly', () => {

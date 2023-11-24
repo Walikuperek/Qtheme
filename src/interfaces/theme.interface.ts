@@ -1,15 +1,22 @@
-/**
- * @description Base css :root variable [key, value]
- *
- * ```
- * ['bg-dark', 'background:#333'] // will create CSS CSS variable --bg-dark: #333 and class .bg-dark { background: var(--bg-dark) }
- * ['bg-dark', '#333'] // will create CSS variable --bg-dark: #333;
- * ```
- * */
-export type ThemeAtom = [string, string];
+import { CSSProps } from '../types';
+
+export type AtomName = string;
 
 /**
- * @description Theme interface, base on it your theme or extend this interface with your own properties.
+ * Atom value can be string | object. Simply your CSS rules or CSS value/CSS value + CSS property name.
+ * @info AtomValue type contains any type, because it allows to use freely with React.
+ */
+export type AtomValue = string | CSSProps | any;
+
+/**
+ * @example ['color-primary', '#000']
+ * @example ['color-primary', 'color:#000']
+ * @example ['color-primary', {color: '#000'}]
+ * */
+export type ThemeAtom = [AtomName, AtomValue];
+
+/**
+ * @description Theme interface, base on it your theme.
  */
 export interface Theme {
   name: string;

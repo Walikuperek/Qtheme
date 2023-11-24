@@ -1,7 +1,14 @@
 import { Theme, ThemeAtom } from './theme.interface';
-import { SetRootAtomsOptions } from './set-root-atoms-options.interface';
+import { InitRootAtomsOptions, SetRootAtomsOptions } from './set-root-atoms-options.interface';
 
 export interface ThemeChanger {
+  /**
+   * @description Initializes default theme (from localStorage else defaultTheme) and common atoms
+   * @param defaultTheme
+   * @param options
+   */
+  init(defaultTheme: Theme, options?: Partial<InitRootAtomsOptions>): void;
+
   /**
    * @description Sets provided css root atoms to the current theme
    * @sideEffect will update LocalStorage as well, key=options.token, defaults to 'Qtheme'

@@ -2,89 +2,96 @@ import { mapToKebabCase } from './helpers';
 import { ThemeAtom, SetRootAtomsOptions } from './interfaces';
 import { DEFAULT_OPTIONS } from './config';
 
-/**
- * Main engine of Qtheme. Made to set root atoms of theme.
- * @param atoms
- * @param options defaults to DEFAULT_OPTIONS
- *
- * ```
- * DEFAULT_OPTIONS = {
- *  generateCSS: true,
- *  token: 'Qtheme',
- *  commonToken: 'Qtheme-common'
- * }
- * ```
- */
 export const setRootAtoms = (atoms: ThemeAtom[], options?: Partial<SetRootAtomsOptions>): void => {
   const opts: SetRootAtomsOptions = options ? { ...DEFAULT_OPTIONS, ...options } : DEFAULT_OPTIONS; // to ensure that all options are set
   let cssCode = '';
 
-  for (const themeAtom of atoms) {
-    const atom = Atom(themeAtom);
-    if (opts.generateCSS) {
-      if (atom.isCSSRule) {
-        const [cssProperty, value] = atom.splitCSSRule();
-        atom.setVar(atom.key, value);
-        if (cssProperty.length) {
-          cssCode += CSS().varClassRow(atom.key, cssProperty);
-        }
-      } else {
-        atom.setVar();
-      }
-    } else {
-      atom.setVar();
+  // Regular for loop is faster than for of loop
+  for (let i = 0; i < atoms.length; i++) {
+    const atom = Atom(atoms[i]);
+
+    if (atom.isAtomCompound && !opts.generateCSS) {
+      // Compound Atoms don't produce CSS variables
+      continue;
     }
+
+    if (!opts.generateCSS) {
+      atom.setRootVar();
+      continue;
+    }
+
+    if (atom.isAtomCompound) {
+      cssCode += atom.getCompoundClass();
+      continue;
+    }
+
+    if (!atom.isValueCSSRule) {
+      atom.setRootVar();
+      continue;
+    }
+
+    const [cssProperty, value]: string[] = atom.splitAtomValue();
+    if (cssProperty.length) {
+      cssCode += CSSVarClassRow(atom.rootVariableName, cssProperty);
+    }
+    atom.setRootVar(atom.rootVariableName, value);
   }
 
   if (opts.generateCSS && opts.token) {
-    Head().removeStyleTag(opts.token);
-    Head().attachStyleTag(cssCode, opts.token);
+    removeStyleTag(opts.token);
+    attachStyleTag(cssCode, opts.token);
   }
 };
 
 function Atom(atom: ThemeAtom) {
-  const [key, cssRule] = atom;
-  const rootVar = mapToKebabCase(key);
+  const [atomName, atomValue] = atom;
+  const isAtomCompound = typeof atomValue === 'object';
+  const isNameCSSRule = typeof atomName === 'string' && atomName.indexOf(':') !== -1;
+  const isValueCSSRule = typeof atomValue === 'string' && atomValue.indexOf(':') !== -1;
+  const splitAtomName = () => atomName.split(/:(.*)/s); // split at the first occurrence of ':' and keep the rest
+  const splitAtomValue = () => typeof atomValue === 'string' ? atomValue.split(':') : ['', ''];
+
+  let atomNameValue = atomName;
+  let atomNameCSSRule = atomValue;
+
+  if (isNameCSSRule) {
+    const [cssKey, rule] = splitAtomName();
+    atomNameValue = mapToKebabCase(cssKey);
+    atomNameCSSRule = rule;
+  }
+  const rootVar = isNameCSSRule ? mapToKebabCase(atomNameValue) : mapToKebabCase(atomName);
 
   return {
-    key: rootVar,
-    isCSSRule: cssRule.indexOf(':') !== -1,
-    splitCSSRule: () => cssRule.split(':'),
-    setVar(property = rootVar, value = cssRule) {
-      Root().setVar(property, value);
-    },
-  };
-}
-
-function Root(documentRef: Document = document) {
-  const root = documentRef.documentElement;
-  return {
-    setVar(className: string, cssRule: string) {
-      root.style.setProperty(`--${className}`, cssRule);
-    },
-  };
-}
-
-function Head(documentRef: Document = document) {
-  const head = documentRef.getElementsByTagName('head')[0];
-  return {
-    removeStyleTag(id: string) {
-      const style = documentRef.getElementById(id);
-      if (style) {
-        head.removeChild(style);
+    rootVariableName: rootVar,
+    isAtomCompound,
+    isValueCSSRule,
+    splitAtomValue,
+    getCompoundClass: () => {
+      let styledClass = isNameCSSRule ? `.${atomNameValue}:${atomNameCSSRule} {` : `.${atomName} {`;
+      for (const [cssProperty, value] of Object.entries(atomValue)) {
+        styledClass += `${mapToKebabCase(cssProperty)}: ${value};`;
       }
+      styledClass += '}\n';
+      return styledClass;
     },
-    attachStyleTag(cssCode: string, id = DEFAULT_OPTIONS.token) {
-      const style = documentRef.createElement('style');
-      style.id = id;
-      style.innerHTML = cssCode;
-      head.appendChild(style);
-    },
+    setRootVar: (property = rootVar, value = atomValue) => {
+      typeof value === 'string'
+        ? document.documentElement.style.setProperty(`--${property}`, value)
+        : void 0;
+    }
   };
 }
 
-function CSS() {
-  return {
-    varClassRow: (varName: string, property: string) => `.${varName} { ${property}: var(--${varName}); }\n`,
-  };
-}
+const attachStyleTag = (cssCode: string, id = DEFAULT_OPTIONS.token) => {
+  const style = document.createElement('style');
+  style.id = id;
+  style.innerHTML = cssCode;
+  document.head.appendChild(style);
+};
+const removeStyleTag = (id: string) => {
+  const style = document.getElementById(id);
+  if (style) {
+    document.head.removeChild(style);
+  }
+};
+const CSSVarClassRow = (varName: string, property: string) => `.${varName} { ${property}: var(--${varName}) }\n`;
