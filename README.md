@@ -14,6 +14,7 @@
 * [NPM package](https://www.npmjs.com/package/@quak.lib/qtheme)
 * [GitHub repository](https://github.com/Walikuperek/Qtheme)
 
+> USE IT ONLY FOR SPA APPLICATION, WITH LOADER AT THE BEGINNING OR SOMETHING!
 
 ~5kb.js, 0 dependencies, fast, fully typed and production-ready *css-in-js* library for managing themes in your app. Create multiple themes and switch between them with **`Qtheme.setTheme(theme)`**
 
